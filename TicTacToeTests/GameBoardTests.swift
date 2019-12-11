@@ -35,6 +35,34 @@ class GameBoardTests: XCTestCase {
         }
     }
 
-
-
+    // test placing marks on the screen
+    // testing the place() method in GameBoard.swift
+    func testPlacingMarks() {
+        var board = GameBoard()
+        
+        // XCTAssertNoThrow: As long as it doesn't throw an error, the test will pass.
+        XCTAssertNoThrow(try board.place(mark: .o, on: (0,0)))
+        XCTAssertEqual(board[(0,0)], .o) // Once we place an o at 0,0, is there really an o at 0,0?
+        
+        XCTAssertNoThrow(try board.place(mark: .x, on: (2,2)))
+        XCTAssertEqual(board[(2,2)], .x)// Once we place an x at 2,2, is there really an o at 2,2?
+        
+        // Make sure that once the o and x are placed, the rest of the squares are blank.
+        for x in 0..<3 {
+            for y in 0..<3 {
+                
+                // Add exceptions for x and o that are there
+                if x == 0 && y == 0 { continue } // Coordinates of x and y = 0, skipping those squares
+                if x == 2 && y == 2 { continue } // Coordinates of x and y = 2, skipping those squares
+                XCTAssertNil(board[(x, y)])
+            }
+        }
+        
+        // make sure you can't change an already marked square
+        // Refer to 34:50 in video for better explanation
+        // Try to add an x to 0,0 to make sure it fails and you can't place an x there since there is already one there.
+        XCTAssertThrowsError(try board.place(mark: .x, on: (0,0))) { (error) in //if the thing that gets passed into is an error
+            XCTAssertEqual(error as? GameBoardError, GameBoardError.invalidSquare) // refer to place() method
+        }
+    }
 }
