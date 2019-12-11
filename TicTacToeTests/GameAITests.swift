@@ -37,5 +37,5 @@ class GameAITests: XCTestCase {
         XCTAssertTrue(game(board: board, isWonBy: .x))
         XCTAssertFalse(game(board: board, isWonBy: .o))
     }
-
+    // see 56:00 to see changing it to fail
 }
