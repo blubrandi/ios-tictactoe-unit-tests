@@ -64,5 +64,7 @@ class GameBoardTests: XCTestCase {
         XCTAssertThrowsError(try board.place(mark: .x, on: (0,0))) { (error) in //if the thing that gets passed into is an error
             XCTAssertEqual(error as? GameBoardError, GameBoardError.invalidSquare) // refer to place() method
         }
+        
+//         See 40:20 for inverse to force a failed test
     }
 }
