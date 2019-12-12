@@ -10,7 +10,8 @@ import XCTest
 @testable import TicTacToe
 
 class GameTests: XCTestCase {
-    
+    var board = GameBoard()
+    var game: Game?
     /*
      X is first player
      X takes turn and marks an x
@@ -22,8 +23,16 @@ class GameTests: XCTestCase {
      */
     
     func testXIsFirst() {
-        var game = Game()
+        let game = Game()
         XCTAssertEqual(game.activePlayer, GameBoard.Mark.x)
+    }
+    
+    func testPlayerXMarksOccupiedSquare() {
+        var game = Game()
+
+        XCTAssertNoThrow(try board.place(mark: .x, on: (2,2)))
+        XCTAssertThrowsError(try board.place(mark: .o, on: (2,2)))
+        XCTAssertThrowsError(try board.place(mark: .x, on: (2,2)))
     }
 
 }

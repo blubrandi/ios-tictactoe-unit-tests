@@ -21,44 +21,18 @@ struct Game {
     internal var gameIsOver: Bool = false
     internal var winningPlayer: GameBoard.Mark? = nil
     internal var activePlayer: GameBoard.Mark? = .x
-    
-    private var gameState: GameState = .active(.x) {
-        didSet {
-//            switch gameState {
-//            case .active:
-//
-//            case .cat:
-//                gameIsOver = true
-//
-//            case .won:
-//                gameIsOver = true
-//            }
-        }
-        
-        // switch game state
-        // case state
-        // winningPlayer
-        // isOver
-        // activePlayer
-    }
-    
-    
-
-    
-    
-    
 
     
     // Restarts the game to a fresh state with an empty board, and player X starting.
     mutating internal func restart() {
         board = GameBoard()
-        gameState = .active(.x)
+        activePlayer = GameBoard.Mark.x
     }
     
     // adds a mark for the currently active player at the given coordinate. Updates game state.
     mutating internal func makeMark(at coordinate: Coordinate) throws {
         
-        guard case let GameState.active(player) = gameState else {
+        guard let player = activePlayer else {
             NSLog("Game is over")
             return
         }
@@ -66,12 +40,9 @@ struct Game {
         do {
             try board.place(mark: player, on: coordinate)
             if game(board: board, isWonBy: player) {
-                gameState = .won(player)
-            } else if board.isFull {
-                gameState = .cat
+                winningPlayer = player
             } else {
-                let newPlayer = player == .x ? GameBoard.Mark.o : GameBoard.Mark.x
-                gameState = .active(newPlayer)
+                let activePlayer = player == .x ? GameBoard.Mark.o : GameBoard.Mark.x
             }
         } catch {
             NSLog("Illegal move")
